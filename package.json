@@ -11,6 +11,7 @@
     "license": "ISC",
     "description": "",
     "dependencies": {
+        "@fingerprintjs/fingerprintjs-pro-server-api": "^4.1.2",
         "axios": "^1.7.2",
         "express": "^4.19.2",
         "express-handlebars": "^7.1.3",
