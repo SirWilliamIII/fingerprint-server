@@ -1,0 +1,22 @@
+<!-- views/home.handlebars -->
+<div class="bg-white p-8 rounded-lg shadow-md max-w-md w-full mx-auto">
+  <h1 class="text-2xl font-bold mb-4 text-center text-gray-800">IP Lookup
+    Results</h1>
+  {{#if error}}
+    <p class="text-red-500 text-center">{{error}}</p>
+  {{else}}
+    <div class="space-y-2">
+      <p><strong class="text-gray-700">IP:</strong>
+        <span class="text-blue-600">{{ipData.ip}}</span></p>
+      <p><strong class="text-gray-700">City:</strong> {{ipData.city}}</p>
+      <p><strong class="text-gray-700">Region:</strong>
+        {{ipData.region_name}}</p>
+      <p><strong class="text-gray-700">Country:</strong>
+        {{ipData.country_name}}</p>
+      <p><strong class="text-gray-700">Latitude:</strong>
+        {{ipData.latitude}}</p>
+      <p><strong class="text-gray-700">Longitude:</strong>
+        {{ipData.longitude}}</p>
+    </div>
+  {{/if}}
+</div>
