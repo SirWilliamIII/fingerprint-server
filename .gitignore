@@ -8,7 +8,7 @@ lerna-debug.log*
 .pnpm-debug.log*
 
 .vscode
-.env
+
 
 test.js
 # Diagnostic reports (https://nodejs.org/api/report.html)
