@@ -42,7 +42,7 @@ app.get("/", async (req, res) => {
     }
 
     const response = await axios.get(
-      `http://api.ipstack.com/${ip}?access_key=${key}`
+      `http://api.ipstack.com/${ip}?access_key=2021aa2a34c2699161cd5d0967128bde`
     );
     res.render("home", { ipData: response.data });
   } catch (error) {
