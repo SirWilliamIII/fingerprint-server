@@ -6,6 +6,12 @@ const path = require("path");
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+require("dotenv").config({ path: "./.env" });
+
+const KEY = process.env.IPSTACK_API_KEY;
+
+console.log("KEY:", KEY);
 // Setup Handlebars
 app.engine("handlebars", exphbs.engine());
 app.set("view engine", "handlebars");
@@ -14,7 +20,6 @@ app.set("view engine", "handlebars");
 app.use(express.static(path.join(__dirname, "public")));
 
 // Replace with your actual API key
-const IPSTACK_API_KEY = "2021aa2a34c2699161cd5d0967128bde";
 
 app.get("/", async (req, res) => {
   try {
@@ -38,7 +43,7 @@ app.get("/", async (req, res) => {
     }
 
     const response = await axios.get(
-      `http://api.ipstack.com/${ip}?access_key=${IPSTACK_API_KEY}`
+      `http://api.ipstack.com/${ip}?access_key=${KEY}`
     );
     res.render("home", { ipData: response.data });
   } catch (error) {
