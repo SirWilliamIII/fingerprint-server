@@ -8,9 +8,20 @@ const getClientIp = require("./helpers/getClientIp"); // Adjust the path as nece
 
 const app = express();
 
+const vID = "2FgZMaeTJbVKRBYweA7H";
+
 const key = process.env.IPSTACK_API_KEY;
 const port = process.env.PORT || 3000;
-console.log("key:", key);
+
+const {
+  FingerprintJsServerApiClient,
+  Region,
+} = require("@fingerprintjs/fingerprintjs-pro-server-api");
+
+const client = new FingerprintJsServerApiClient({
+  apiKey: key,
+  region: Region.Global,
+});
 
 // Setup Handlebars
 app.engine("handlebars", exphbs.engine());
@@ -22,10 +33,35 @@ app.use(express.static(path.join(__dirname, "public")));
 // Replace with your actual API key
 app.use(bodyParser.json());
 
+// async function fetchVisitorHistory(visitorId, req) {
+//   const apiKey = client.apiKey; // Replace with your actual API key
+//   const baseUrl = "https://api.fpjs.io"; // Base URL for the FingerprintJS Pro API
+//   const userAgent = req.headers["user-agent"];
+//   // Define your query parameters
+//   const queryParams = {
+//     visitorId: visitorId, // Assuming visitorId is the parameter you need to pass
+//     limit: 5, // Example additional parameter
+//     start: 0, // Example additional parameter
+//   };
+//   let response;
+//   try {
+//     // Make the API call with query parameters
+//     response = await client.fetch(`${baseUrl}/visitors`, {
+//       params: queryParams,
+//       headers: {
+//         Authorization: `Bearer ${apiKey}`, // Assuming the API uses Bearer token authentication
+//       },
+//     });
+
+//     // Process the response
+//   } catch (error) {
+//     console.error("Error fetching visitor data:", error);
+//   }
+// }
+
 app.get("/", async (req, res) => {
   try {
     const ip = await getClientIp(req);
-    console.log("ip", ip);
     if (!ip) {
       throw new Error("Unable to fetch client IP");
     }
@@ -33,7 +69,7 @@ app.get("/", async (req, res) => {
     const response = await axios.get(
       `http://api.ipstack.com/${ip}?access_key=${key}`
     );
-    console.log("response", response.data.location);
+
     res.render("home", {
       ipData: response.data,
     });
@@ -42,19 +78,6 @@ app.get("/", async (req, res) => {
     res.render("home", { error: "Unable to fetch IP data" });
   }
 });
-
-// app.post("/log-browser-data", (req, res) => {
-//   const browserData = req.body;
-//   const clientIp =
-//     req.headers["x-forwarded-for"] || req.connection.remoteAddress;
-
-//   console.log("Received browser data:", browserData);
-//   console.log("Client IP address:", clientIp);
-
-//   // Here you can log the data to a file, database, etc.
-//   // For demonstration, we'll just send a success response
-//   res.json({ status: "success", data: browserData, ip: clientIp });
-// });
 
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`);
