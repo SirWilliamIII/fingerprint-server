@@ -1,11 +1,11 @@
-require("dotenv").config();
+const dotenv = require("dotenv");
+dotenv.config();
 const express = require("express");
 const exphbs = require("express-handlebars");
 const path = require("path");
 const bodyParser = require("body-parser");
 const axios = require("axios");
-const getClientIp = require("./helpers/getClientIp"); // Adjust the path as necessary
-
+const getClientIp = require("./helpers/getClientIp");
 const app = express();
 
 const key = process.env.IPSTACK_API_KEY;
@@ -24,6 +24,7 @@ app.use(bodyParser.json());
 app.get("/", async (req, res) => {
   try {
     const ip = await getClientIp(req);
+
     if (!ip) {
       throw new Error("Unable to fetch client IP");
     }
@@ -31,6 +32,7 @@ app.get("/", async (req, res) => {
     const response = await axios.get(
       `http://api.ipstack.com/${ip}?access_key=${key}`
     );
+    console.log(response.data);
 
     res.render("home", {
       ipData: response.data,
